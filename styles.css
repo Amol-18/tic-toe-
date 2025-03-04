@@ -49,11 +49,26 @@ h1 {
   font-size: 2rem;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
 .cell:hover {
   background-color: #ccc;
+}
+
+.cell.winner {
+  background-color: #4caf50; /* Green background for winning cells */
+  color: white;
+  animation: bounce 0.5s ease-in-out;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
 }
 
 .reset-btn {
@@ -69,4 +84,10 @@ h1 {
 
 .reset-btn:hover {
   background-color: #0056b3;
+}
+
+.footer {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #777;
 }
