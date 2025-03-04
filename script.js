@@ -1,71 +1,93 @@
-const board = document.querySelector('.board');
-const cells = document.querySelectorAll('.cell');
-const statusText = document.querySelector('.status');
-const resetBtn = document.querySelector('.reset-btn');
-
-let currentPlayer = 'X';
-let gameActive = true;
-let gameState = ['', '', '', '', '', '', '', '', ''];
-
-const winningConditions = [
-  [0, 1, 2], // Rows
-  [3, 4, 5],
-  [6, 7, 8],
-  [0, 3, 6], // Columns
-  [1, 4, 7],
-  [2, 5, 8],
-  [0, 4, 8], // Diagonals
-  [2, 4, 6]
-];
-
-function handleCellClick(event) {
-  const clickedCell = event.target;
-  const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
-
-  if (gameState[clickedCellIndex] !== '' || !gameActive) return;
-
-  gameState[clickedCellIndex] = currentPlayer;
-  clickedCell.textContent = currentPlayer;
-
-  checkForWinner();
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
 }
 
-function checkForWinner() {
-  let roundWon = false;
-
-  for (let condition of winningConditions) {
-    const [a, b, c] = condition;
-    if (gameState[a] === '' || gameState[b] === '' || gameState[c] === '') continue;
-
-    if (gameState[a] === gameState[b] && gameState[b] === gameState[c]) {
-      roundWon = true;
-      break;
-    }
-  }
-
-  if (roundWon) {
-    statusText.textContent = `Player ${currentPlayer} Wins!`;
-    gameActive = false;
-    return;
-  }
-
-  if (!gameState.includes('')) {
-    statusText.textContent = "It's a Draw!";
-    gameActive = false;
-    return;
-  }
-
-  currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-  statusText.textContent = `Player ${currentPlayer}'s Turn`;
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
 }
 
-function resetGame() {
-  gameState = ['', '', '', '', '', '', '', '', ''];
-  gameActive = true;
-  currentPlayer = 'X';
-  statusText.textContent = `Player ${currentPlayer}'s Turn`;
-  cells.forEach(cell => cell.textContent = '');
+.container {
+  text-align: center;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-cells.forEach(cell => cell.addEventListener('click', handleCellClick));
-resetBtn.addEventListener('click', resetGame);
+h1 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.status {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #555;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 100px);
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ddd;
+  border-radius: 10px;
+  font-size: 2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.cell:hover {
+  background-color: #ccc;
+}
+
+.cell.winner {
+  background-color: #4caf50; /* Green background for winning cells */
+  color: white;
+  animation: bounce 0.5s ease-in-out;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.reset-btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.reset-btn:hover {
+  background-color: #0056b3;
+}
+
+.footer {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #777;
+}
